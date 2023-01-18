@@ -39,6 +39,9 @@ const openModal = document.getElementById("openModal");
 const addNewServiceForm = document.getElementById("addNewServiceForm");
 const closeModal = document.getElementById("closeModal");
 
+//Bootstrap selector
+const modalOwnBootstrap = new bootstrap.Modal("#modalOwn");
+
 if (serviceLists.children.length == 0) {
   table.classList.add("d-none");
 }
@@ -49,7 +52,14 @@ const addingServiceToList = (service, quantity) => {
   const tr = document.createElement("tr");
   const total = service.price * quantity;
   tr.innerHTML = `
-    <td class="d-flex justify-content-between align-items-center"><span>${service.name}</span><i class="bi bi-trash3 text-danger delBtn"></i></td>
+    <td class="d-flex justify-content-between align-items-center"><span>${service.name}</span><div class="dropdown">
+  <i class="bi bi-three-dots-vertical" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+    
+  </i>
+  <ul class="dropdown-menu">
+    <li><a class="dropdown-item delBtn" href="#">Delete</a></li>
+      </ul>
+    </div></td>
     <td class="text-end selectedQuantity" >${quantity}</td>
     <td class="text-end">$${service.price}</td>
     <td class="text-end">$<span class="selectedTotal">${total}</span></td>
@@ -150,11 +160,11 @@ app.addEventListener("click", (event) => {
 });
 
 openModal.addEventListener("click", () => {
-  modalOwn.classList.remove("d-none");
+  modalOwnBootstrap.show();
 });
 
 closeModal.addEventListener("click", () => {
-  modalOwn.classList.add("d-none");
+  modalOwnBootstrap.hide();
 });
 
 addNewServiceForm.addEventListener("submit", (event) => {
@@ -170,5 +180,7 @@ addNewServiceForm.addEventListener("submit", (event) => {
   });
   selectService.append(new Option(newServiceName, id));
   alert("New Service Added");
-  modalOwn.classList.add("d-none");
+  modalOwnBootstrap.hide();
+
+  addNewServiceForm.reset();
 });
